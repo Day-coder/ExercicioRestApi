@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import org.springframework.beans.factory.annotation.Value;
+
 @Entity
 public class Livro {
 	@Id
@@ -13,6 +15,7 @@ public class Livro {
 	private Long id;
 	@Column(length = 50, nullable = false)
 	private String titulo;
+
 	private String autor;
 	private int anoPublicacao;
 	private String editora;

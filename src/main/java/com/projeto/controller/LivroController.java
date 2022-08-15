@@ -17,41 +17,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.entidade.Livro;
 import com.projeto.repository.LivroRepository;
+import com.projeto.service.LivroService;
 
 @RestController
 @RequestMapping("/")
 public class LivroController {
 	
+//	@Autowired
+//	LivroRepository repository;
 	@Autowired
-	LivroRepository repository;
+	LivroService service;
 	
 	@GetMapping("/livros")
 	public ResponseEntity<List<Livro>> mostraTodosLivros(){
-		List<Livro> livros= (List<Livro>) repository.findAll();
+		List<Livro> livros= service.mostrarLivros();
 		return ResponseEntity.status(HttpStatus.OK).body(livros);	
 	}
 	
 	@PostMapping("/livros")
 	public ResponseEntity<Livro> salvaLivro(@RequestBody Livro livro){
-		Livro livro1= repository.save(livro);
+		Livro livro1= service.salvar(livro);
 		return ResponseEntity.status(HttpStatus.CREATED).body(livro1);
 	}
 	
 	@GetMapping("/livros/{idlivro}")
 	public ResponseEntity<Livro> mostraUmLivro(@PathVariable("idlivro") Long idlivro){
-		Optional<Livro> livro=repository.findById(idlivro);
-		return ResponseEntity.ok(livro.get());
+		return ResponseEntity.ok(service.mostrarUmLivro(idlivro));
 	}
 	
 	@PutMapping("/livros/{idlivro}")
 	public ResponseEntity<Livro> atualizaLivro(@PathVariable("idlivro") Long idlivro,
 			@RequestBody Livro livro){
-		return ResponseEntity.ok(repository.save(livro));
+		return ResponseEntity.ok(service.salvar(livro));
 	}
 	
 	@DeleteMapping("/livros/{idlivro}")
 	public ResponseEntity<String> deletaLivro(@PathVariable("idlivro") Long idlivro){
-		repository.deleteById(idlivro);
+		service.deletarLivro(idlivro);
 		return new ResponseEntity("Deletado com sucesso", HttpStatus.OK);
 		
 	}
